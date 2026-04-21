@@ -3,30 +3,47 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Регистрация нового пользователя</h3>
+            </div>
+            <div class="panel-body">
+                @if (!string.IsNullOrEmpty(ViewBag.Error))
+                {
+                    <div class="alert alert-danger">@ViewBag.Error</div>
+                }
 
-@if (!string.IsNullOrEmpty(ViewBag.Error))
-{
-    <div class="alert alert-danger">@ViewBag.Error</div>
-}
-
-<form method="post" action="/Account/Register">
-    <div class="form-group">
-        <label>ФИО</label>
-        <input type="text" name="fullName" class="form-control" required />
+                <form method="post" action="/Account/Register">
+                    <div class="form-group">
+                        <label>ФИО</label>
+                        <input type="text" name="fullName" class="form-control" placeholder="Иванов Иван Иванович" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="example@mail.ru" required />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Пароль</label>
+                                <input type="password" name="password" class="form-control" placeholder="Не менее 6 символов" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Подтверждение</label>
+                                <input type="password" name="confirmPassword" class="form-control" placeholder="Повторите пароль" required />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Зарегистрироваться</button>
+                    <div class="text-center" style="margin-top: 15px;">
+                        <a href="/Account/Login">Уже есть аккаунт? Войти</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label>Email</label>
-        <input type="email" name="email" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label>Пароль</label>
-        <input type="password" name="password" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label>Подтверждение пароля</label>
-        <input type="password" name="confirmPassword" class="form-control" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-    <a href="/Account/Login" class="btn btn-link">Уже есть аккаунт? Войти</a>
-</form>
+</div>

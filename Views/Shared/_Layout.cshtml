@@ -1,66 +1,130 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - приложение ASP.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            padding-top: 100px; /* Было 70px */
+            padding-bottom: 20px;
+            background-color: #f5f5f5;
+        }
+
+        /* Остальные стили без изменений */
+        .page-header {
+            margin-top: 0;
+            padding-bottom: 9px;
+            border-bottom: 2px solid #337ab7;
+        }
+
+            .page-header h2 {
+                margin-top: 0;
+                color: #333;
+            }
+
+        .table {
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+
+            .table thead {
+                background-color: #337ab7;
+                color: white;
+            }
+
+            .table tbody tr:hover {
+                background-color: #f9f9f9;
+            }
+
+        .footer {
+            margin-top: 30px;
+            padding: 15px 0;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .panel {
+            border-radius: 0;
+        }
+
+        .panel-heading {
+            border-radius: 0;
+            background-color: #337ab7 !important;
+            color: white !important;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+    <div class="navbar navbar-default navbar-fixed-top" style="min-height: 40px;">
         <div class="container">
-            @Html.ActionLink("Имя приложения", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Переключить навигацию" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Главная", "Index", "Home")</li>
-
-                    @if (Session["UserId"] != null)
-                    {
-                        <li>@Html.ActionLink("Кадастровые объекты", "Index", "Objects")</li>
-                        <li>@Html.ActionLink("Подать заявку", "Create", "Applications")</li>
-                        <li>@Html.ActionLink("Мои заявки", "MyApplications", "Applications")</li>
-
-                        if (Session["UserRole"]?.ToString() == "Employee" || Session["UserRole"]?.ToString() == "Admin")
-                        {
-                            <li>@Html.ActionLink("Обработка заявок", "Index", "Applications")</li>
-                            <li>@Html.ActionLink("Справочник типов", "Index", "Types")</li>
-                        }
-                        if (Session["UserRole"]?.ToString() == "Admin")
-                        {
-                            <li>@Html.ActionLink("Пользователи", "Index", "Users")</li>
-                        }
-                    }
-
-                    <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                    <li>@Html.ActionLink("Контакты", "Contact", "Home")</li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    @if (Session["UserId"] != null)
-                    {
-                        <li><p class="navbar-text">@Session["UserFullName"] (@Session["UserRole"])</p></li>
-                        <li>@Html.ActionLink("Выйти", "Logout", "Account")</li>
-                    }
-                    else
-                    {
-                        <li>@Html.ActionLink("Войти", "Login", "Account")</li>
-                        <li>@Html.ActionLink("Регистрация", "Register", "Account")</li>
-                    }
-                </ul>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/" style="padding: 10px 15px; font-size: 16px;">🏛️ Кадастровое управление</a>
             </div>
+
+            <!-- Убираем collapse, делаем строго горизонтальное меню -->
+            <ul class="nav navbar-nav" style="font-size: 14px; display: inline-block; float: left;">
+                <li>@Html.ActionLink("Главная", "Index", "Home")</li>
+
+                @if (Session["UserId"] != null)
+                {
+                    <li>@Html.ActionLink("Реестр", "Index", "Objects")</li>
+                    <li>@Html.ActionLink("Подать заявку", "Create", "Applications")</li>
+                    <li>@Html.ActionLink("Мои заявки", "MyApplications", "Applications")</li>
+
+                    if (Session["UserRole"]?.ToString() == "Employee" || Session["UserRole"]?.ToString() == "Admin")
+                    {
+                        <li>@Html.ActionLink("Обработка", "Index", "Applications")</li>
+                        <li>@Html.ActionLink("Справочник", "Index", "Types")</li>
+                    }
+                    if (Session["UserRole"]?.ToString() == "Admin")
+                    {
+                        <li>@Html.ActionLink("Пользователи", "Index", "Users")</li>
+                    }
+                }
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right" style="font-size: 14px; display: inline-block; float: right;">
+                @if (Session["UserId"] != null)
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding: 10px 15px;">
+                            👤 @Session["UserFullName"]
+                            <span class="label label-primary" style="font-size: 11px; padding: 2px 6px;">@Session["UserRole"]</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header">@Session["UserEmail"]</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Выйти", "Logout", "Account")</li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink("Войти", "Login", "Account")</li>
+                    <li>@Html.ActionLink("Регистрация", "Register", "Account")</li>
+                }
+            </ul>
+
+            <div style="clear: both;"></div>
         </div>
-    </nav>
+    </div>
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - мое приложение ASP.NET</p>
+        <footer class="footer">
+            <div class="container">
+                <p>© @DateTime.Now.Year - Кадастровое управление</p>
+            </div>
         </footer>
     </div>
 

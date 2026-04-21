@@ -3,22 +3,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Вход в систему</h3>
+            </div>
+            <div class="panel-body">
+                @if (!string.IsNullOrEmpty(ViewBag.Error))
+                {
+                    <div class="alert alert-danger">@ViewBag.Error</div>
+                }
 
-@if (!string.IsNullOrEmpty(ViewBag.Error))
-{
-    <div class="alert alert-danger">@ViewBag.Error</div>
-}
+                <form method="post" action="/Account/Login">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="Введите email" required autofocus />
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" name="password" class="form-control" placeholder="Введите пароль" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Войти</button>
+                    <div class="text-center" style="margin-top: 15px;">
+                        <a href="/Account/Register">Регистрация</a>
+                    </div>
+                </form>
 
-<form method="post" action="/Account/Login">
-    <div class="form-group">
-        <label>Email</label>
-        <input type="email" name="email" class="form-control" required />
+                <hr />
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label>Пароль</label>
-        <input type="password" name="password" class="form-control" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Войти</button>
-    <a href="/Account/Register" class="btn btn-link">Регистрация</a>
-</form>
+</div>

@@ -3,15 +3,79 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="jumbotron">
+<div class="jumbotron" style="background-color: white; border: 1px solid #ddd;">
     <h1>Кадастровое управление</h1>
-    <p class="lead">Автоматизированная система учета объектов недвижимости и обработки заявок.</p>
+    <p class="lead">Автоматизированная система учёта объектов недвижимости и обработки заявок.</p>
+
     @if (Session["UserId"] == null)
     {
-        <p><a href="/Account/Login" class="btn btn-primary btn-lg">Войти в систему &raquo;</a></p>
+        <p>
+            <a href="/Account/Login" class="btn btn-primary btn-lg">Войти в систему</a>
+            <a href="/Account/Register" class="btn btn-default btn-lg">Регистрация</a>
+        </p>
     }
     else
     {
-        <p><a href="/Home/Index" class="btn btn-success btn-lg">Добро пожаловать, @Session["UserFullName"] &raquo;</a></p>
+        <p>
+            <a href="/Objects/Index" class="btn btn-primary btn-lg">Перейти к реестру объектов</a>
+        </p>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <h4>📋 Подать заявку</h4>
+                <p>Заявка на регистрацию объекта недвижимости</p>
+                <p><a href="/Applications/Create" class="btn btn-success">Подать заявку</a></p>
+            </div>
+            <div class="col-md-4">
+                <h4>📌 Мои заявки</h4>
+                <p>Отслеживание статуса поданных заявок</p>
+                <p><a href="/Applications/MyApplications" class="btn btn-info">Смотреть</a></p>
+            </div>
+            <div class="col-md-4">
+                <h4>🔍 Реестр</h4>
+                <p>Просмотр зарегистрированных объектов</p>
+                <p><a href="/Objects/Index" class="btn btn-warning">Открыть реестр</a></p>
+            </div>
+        </div>
     }
 </div>
+
+@if (Session["UserId"] != null && (Session["UserRole"]?.ToString() == "Employee" || Session["UserRole"]?.ToString() == "Admin"))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Панель сотрудника</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="/Applications/Index?status=Pending" class="btn btn-warning btn-block">
+                                ⏳ Новые заявки
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/Applications/Index" class="btn btn-info btn-block">
+                                📋 Все заявки
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/Types/Index" class="btn btn-primary btn-block">
+                                📂 Справочник типов
+                            </a>
+                        </div>
+                        @if (Session["UserRole"]?.ToString() == "Admin")
+                        {
+                            <div class="col-md-3">
+                                <a href="/Users/Index" class="btn btn-danger btn-block">
+                                    👥 Пользователи
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

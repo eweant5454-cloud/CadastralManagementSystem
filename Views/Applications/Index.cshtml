@@ -1,0 +1,59 @@
+﻿@model List<CadastralManagementSystem.Models.Application>
+@{
+    ViewBag.Title = "Обработка заявок";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="btn-group" style="margin-bottom: 20px;">
+    <a href="/Applications/Index" class="btn btn-default @(string.IsNullOrEmpty(ViewBag.StatusFilter) ? "active" : "")">Все</a>
+    <a href="/Applications/Index?status=Pending" class="btn btn-default @(ViewBag.StatusFilter == "Pending" ? "active" : "")">На рассмотрении</a>
+    <a href="/Applications/Index?status=Approved" class="btn btn-default @(ViewBag.StatusFilter == "Approved" ? "active" : "")">Одобренные</a>
+    <a href="/Applications/Index?status=Rejected" class="btn btn-default @(ViewBag.StatusFilter == "Rejected" ? "active" : "")">Отклоненные</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Заявитель</th>
+            <th>Тип объекта</th>
+            <th>Адрес</th>
+            <th>Площадь</th>
+            <th>Статус</th>
+            <th>Дата подачи</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var app in Model)
+        {
+            <tr>
+                <td>@app.Id</td>
+                <td>@app.ApplicantName</td>
+                <td>@app.CadastralObjectTypeName</td>
+                <td>@app.Address</td>
+                <td>@(app.Area?.ToString() ?? "-") м²</td>
+                <td>
+                    @if (app.Status == "Pending")
+                    {
+                        <span class="label label-warning">На рассмотрении</span>
+                    }
+                    else if (app.Status == "Approved")
+                    {
+                        <span class="label label-success">Одобрена</span>
+                    }
+                    else
+                    {
+                        <span class="label label-danger">Отклонена</span>
+                    }
+                </td>
+                <td>@app.SubmissionDate.ToString("dd.MM.yyyy")</td>
+                <td>
+                    <a href="/Applications/Process/@app.Id" class="btn btn-primary btn-sm">Обработать</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

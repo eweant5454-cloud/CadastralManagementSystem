@@ -121,7 +121,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ObjectsController.cs" />
+    <Compile Include="Controllers\TypesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -189,6 +193,14 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\users\Index.cshtml" />
+    <Content Include="Views\users\Create.cshtml" />
+    <Content Include="Views\Types\Index.cshtml" />
+    <Content Include="Views\Applications\Index.cshtml" />
+    <Content Include="Views\Applications\Create.cshtml" />
+    <Content Include="Views\Objects\Index.cshtml" />
+    <Content Include="Views\Applications\MyApplications.cshtml" />
+    <Content Include="Views\Applications\Process.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

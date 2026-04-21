@@ -1,0 +1,34 @@
+﻿@model CadastralManagementSystem.Models.Application
+@{
+    ViewBag.Title = "Подать заявку на регистрацию";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form method="post" action="/Applications/Create">
+    <div class="form-group">
+        <label>Тип объекта</label>
+        <select name="CadastralObjectTypeId" class="form-control" required>
+            <option value="">Выберите тип...</option>
+            @foreach (var type in ViewBag.Types)
+            {
+                <option value="@type.Id">@type.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Адрес объекта</label>
+        <input type="text" name="Address" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Площадь (м²)</label>
+        <input type="number" step="0.01" name="Area" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Комментарий к заявке</label>
+        <textarea name="ApplicantComment" class="form-control" rows="4"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Подать заявку</button>
+    <a href="/Home/Index" class="btn btn-default">Отмена</a>
+</form>

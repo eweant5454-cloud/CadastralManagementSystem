@@ -290,5 +290,24 @@ namespace CadastralManagementSystem.Models
                 }
             }
         }
+        public void CreateObjectFromApplication(string cadastralNumber, int typeId, string address, double? area, string ownerName)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = @"INSERT INTO CadastralObjects (CadastralNumber, TypeId, Address, Area, OwnerName, RegistrationDate, Status) 
+                       VALUES (@CadastralNumber, @TypeId, @Address, @Area, @OwnerName, @RegistrationDate, 'Active')";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@CadastralNumber", cadastralNumber);
+                    cmd.Parameters.AddWithValue("@TypeId", typeId);
+                    cmd.Parameters.AddWithValue("@Address", address);
+                    cmd.Parameters.AddWithValue("@Area", area ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@OwnerName", ownerName);
+                    cmd.Parameters.AddWithValue("@RegistrationDate", DateTime.Now);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

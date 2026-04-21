@@ -1,0 +1,94 @@
+﻿@model CadastralManagementSystem.Models.Application
+@{
+    ViewBag.Title = "Обработка заявки №" + Model.Id;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Информация о заявке</h3>
+    </div>
+    <div class="panel-body">
+        <p><strong>Заявитель:</strong> @Model.ApplicantName</p>
+        <p><strong>Тип объекта:</strong> @Model.CadastralObjectTypeName</p>
+        <p><strong>Адрес:</strong> @Model.Address</p>
+        <p><strong>Площадь:</strong> @(Model.Area?.ToString() ?? "Не указана") м²</p>
+        <p><strong>Комментарий заявителя:</strong> @(Model.ApplicantComment ?? "Нет")</p>
+        <p><strong>Дата подачи:</strong> @Model.SubmissionDate.ToString("dd.MM.yyyy HH:mm")</p>
+        <p>
+            <strong>Текущий статус:</strong>
+            @if (Model.Status == "Pending")
+            {
+                <span class="label label-warning">На рассмотрении</span>
+            }
+            else
+            {
+                <span class="label label-default">@Model.Status</span>
+            }
+        </p>
+    </div>
+</div>
+
+@if (Model.Status == "Pending")
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Одобрить заявку</h3>
+                </div>
+                <div class="panel-body">
+                    <form method="post" action="/Applications/Approve">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="form-group">
+                            <label>Кадастровый номер</label>
+                            <input type="text" name="cadastralNumber" class="form-control" required
+                                   placeholder="Например: 77:01:0001001:1234" />
+                            <small class="text-muted">Уникальный номер объекта в реестре</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Комментарий сотрудника</label>
+                            <textarea name="employeeComment" class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">Одобрить и зарегистрировать</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Отклонить заявку</h3>
+                </div>
+                <div class="panel-body">
+                    <form method="post" action="/Applications/Reject">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="form-group">
+                            <label>Причина отклонения</label>
+                            <textarea name="employeeComment" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Отклонить заявку</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <strong>Заявка уже обработана.</strong><br />
+        Статус: @Model.Status<br />
+        @if (!string.IsNullOrEmpty(Model.EmployeeComment))
+        {
+            <span>Комментарий сотрудника: @Model.EmployeeComment</span>
+        }
+    </div>
+}
+
+<p>
+    <a href="/Applications/Index" class="btn btn-default">Назад к списку</a>
+</p>

@@ -1,0 +1,56 @@
+﻿@model List<CadastralManagementSystem.Models.User>
+@{
+    ViewBag.Title = "Управление пользователями";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<p>
+    <a href="/Users/Create" class="btn btn-primary">Создать пользователя</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>ФИО</th>
+            <th>Email</th>
+            <th>Роль</th>
+            <th>Дата регистрации</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>@user.RegisteredAt.ToString("dd.MM.yyyy")</td>
+                <td>
+                    @if (user.IsActive)
+                    {
+                        <span class="label label-success">Активен</span>
+                    }
+                    else
+                    {
+                        <span class="label label-danger">Заблокирован</span>
+                    }
+                </td>
+                <td>
+                    <a href="/Users/Edit/@user.Id" class="btn btn-warning btn-sm">Редактировать</a>
+                    <a href="/Users/Delete/@user.Id" class="btn btn-danger btn-sm" onclick="return confirm('Удалить пользователя?')">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

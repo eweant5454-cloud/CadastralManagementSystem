@@ -1,0 +1,50 @@
+﻿@model List<CadastralManagementSystem.Models.CadastralObject>
+@{
+    ViewBag.Title = "Реестр кадастровых объектов";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form method="get" action="/Objects/Index" class="form-inline" style="margin-bottom: 20px;">
+    <input type="text" name="search" class="form-control" placeholder="Поиск по номеру, адресу, владельцу..." value="@ViewBag.Search" style="width: 400px;" />
+    <button type="submit" class="btn btn-primary">Найти</button>
+    <a href="/Objects/Index" class="btn btn-default">Сбросить</a>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Кадастровый номер</th>
+            <th>Тип</th>
+            <th>Адрес</th>
+            <th>Площадь</th>
+            <th>Владелец</th>
+            <th>Дата регистрации</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Model)
+        {
+            <tr>
+                <td>@obj.CadastralNumber</td>
+                <td>@obj.TypeName</td>
+                <td>@obj.Address</td>
+                <td>@(obj.Area?.ToString() ?? "-") м²</td>
+                <td>@obj.OwnerName</td>
+                <td>@(obj.RegistrationDate?.ToString("dd.MM.yyyy") ?? "-")</td>
+                <td>
+                    @if (obj.Status == "Active")
+                    {
+                        <span class="label label-success">Актуален</span>
+                    }
+                    else
+                    {
+                        <span class="label label-default">Архивный</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

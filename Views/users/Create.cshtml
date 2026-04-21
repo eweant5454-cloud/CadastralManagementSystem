@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Создание пользователя";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<form method="post" action="/Users/Create">
+    <div class="form-group">
+        <label>ФИО</label>
+        <input type="text" name="fullName" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Пароль</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Роль</label>
+        <select name="role" class="form-control" required>
+            <option value="Applicant">Заявитель</option>
+            <option value="Employee">Сотрудник</option>
+            <option value="Admin">Администратор</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Создать</button>
+    <a href="/Users" class="btn btn-default">Отмена</a>
+</form>

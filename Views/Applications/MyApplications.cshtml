@@ -1,0 +1,66 @@
+﻿@model List<CadastralManagementSystem.Models.Application>
+@{
+    ViewBag.Title = "Мои заявки";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<p>
+    <a href="/Applications/Create" class="btn btn-primary">Подать новую заявку</a>
+</p>
+
+@if (Model == null || Model.Count == 0)
+{
+    <div class="alert alert-info">У вас пока нет поданных заявок.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Тип объекта</th>
+                <th>Адрес</th>
+                <th>Площадь</th>
+                <th>Статус</th>
+                <th>Дата подачи</th>
+                <th>Комментарий сотрудника</th>
+                <th>Кадастровый номер</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var app in Model)
+            {
+                <tr>
+                    <td>@app.Id</td>
+                    <td>@app.CadastralObjectTypeName</td>
+                    <td>@app.Address</td>
+                    <td>@(app.Area?.ToString() ?? "-") м²</td>
+                    <td>
+                        @if (app.Status == "Pending")
+                        {
+                            <span class="label label-warning">На рассмотрении</span>
+                        }
+                        else if (app.Status == "Approved")
+                        {
+                            <span class="label label-success">Одобрена</span>
+                        }
+                        else
+                        {
+                            <span class="label label-danger">Отклонена</span>
+                        }
+                    </td>
+                    <td>@app.SubmissionDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@(app.EmployeeComment ?? "-")</td>
+                    <td>@(app.ResultingCadastralNumber ?? "-")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

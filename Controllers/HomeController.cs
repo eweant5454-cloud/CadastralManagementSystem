@@ -10,20 +10,20 @@ namespace CadastralManagementSystem.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.UserRole = Session["UserRole"]?.ToString();
+            ViewBag.UserName = Session["UserFullName"]?.ToString();
             return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
+            ViewBag.Message = "Система кадастрового управления.";
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
+            ViewBag.Message = "Контакты кадастровой палаты.";
             return View();
         }
     }

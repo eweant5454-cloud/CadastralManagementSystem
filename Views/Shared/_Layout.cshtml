@@ -17,10 +17,41 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Информация", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Связаться", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Главная", "Index", "Home")</li>
+
+                    @if (Session["UserId"] != null)
+                    {
+                        <li>@Html.ActionLink("Кадастровые объекты", "Index", "Objects")</li>
+                        <li>@Html.ActionLink("Подать заявку", "Create", "Applications")</li>
+                        <li>@Html.ActionLink("Мои заявки", "MyApplications", "Applications")</li>
+
+                        if (Session["UserRole"]?.ToString() == "Employee" || Session["UserRole"]?.ToString() == "Admin")
+                        {
+                            <li>@Html.ActionLink("Обработка заявок", "Index", "Applications")</li>
+                            <li>@Html.ActionLink("Справочник типов", "Index", "Types")</li>
+                        }
+                        if (Session["UserRole"]?.ToString() == "Admin")
+                        {
+                            <li>@Html.ActionLink("Пользователи", "Index", "Users")</li>
+                        }
+                    }
+
+                    <li>@Html.ActionLink("О программе", "About", "Home")</li>
+                    <li>@Html.ActionLink("Контакты", "Contact", "Home")</li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Session["UserId"] != null)
+                    {
+                        <li><p class="navbar-text">@Session["UserFullName"] (@Session["UserRole"])</p></li>
+                        <li>@Html.ActionLink("Выйти", "Logout", "Account")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Войти", "Login", "Account")</li>
+                        <li>@Html.ActionLink("Регистрация", "Register", "Account")</li>
+                    }
                 </ul>
             </div>
         </div>

@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Регистрация";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<form method="post" action="/Account/Register">
+    <div class="form-group">
+        <label>ФИО</label>
+        <input type="text" name="fullName" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Пароль</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Подтверждение пароля</label>
+        <input type="password" name="confirmPassword" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+    <a href="/Account/Login" class="btn btn-link">Уже есть аккаунт? Войти</a>
+</form>
